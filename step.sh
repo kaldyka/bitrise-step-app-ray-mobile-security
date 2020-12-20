@@ -42,7 +42,8 @@ auth_header="Authorization: Bearer $auth_token"
 #------------------------------------------4 upload, get job id
 
 jobid=""
-upload_response=$(curl -w "%{http_code}" -H "$auth_header" -F "app_file=@$app" -X POST ${base_url}api/v1/jobs | grep "\<202\>" | cut -d\" -f2)
+upload_response=$(curl -w "%{http_code}" -H "$auth_header" -F "app_file=@$app" -X POST ${base_url}api/v1/jobs)
+upload_response=$(echo ${upload_response} | grep "\<202\>" | cut -d\" -f2)
 
 if [ -z "$upload_response" ]
 then
