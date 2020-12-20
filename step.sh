@@ -30,7 +30,6 @@ fi
 #------------------------------------------3 auth
 
 auth_token=$(curl -d "username=${appray_user}&password=${appray_passwd}&grant_type=password" -X POST ${base_url}api/v1/authentication | awk '/"access_token":/{token=$2}END{print token}'  | cut -d\" -f2)
-echo $auth_token
 
 if [ -z "$auth_token" ]
 then
@@ -44,7 +43,6 @@ auth_header="Authorization: Bearer $auth_token"
 
 jobid=""
 upload_response=$(curl -w "%{http_code}" -H "$auth_header" -F "app_file=@$app" -X POST ${base_url}api/v1/jobs | grep "\<202\>" | cut -d\" -f2)
-echo $upload_response
 
 if [ -z "$upload_response" ]
 then
@@ -53,10 +51,9 @@ then
  exit 1
 else
  jobid=$upload_response
- echo $jobid
 fi
 
-#------------------------------------------5 time loop
+#------------------------------------------5 check job loop
 
 jobdone=0
 
@@ -81,7 +78,7 @@ then
  echo "result_path was left empty"
  echo "Saving results interrupted"
 else
- echo "Saving results to ${result_path}/app_ray_results.xml"
+ echo "Saving results to ${result_path}app_ray_results.xml"
  curl -H "$auth_header" ${base_url}api/v1/jobs/"$jobid"/junit --output "${result_path}"app_ray_result.xml
 fi
 
@@ -96,6 +93,5 @@ then
 else
  echo "Analysis risk score is whitin treshold"
 fi
-
 
 exit 0
