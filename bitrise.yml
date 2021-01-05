@@ -45,7 +45,7 @@ workflows:
         - score_treshold: 90
         - result_path: ./results/
         - appray_user: $APP_RAY_USER
-        - appray_passwd: $APP_RAY_PASSWORD
+        - appray_passwd: $APP_RAY_PASSWD
     - script:
         inputs:
         - content: |
